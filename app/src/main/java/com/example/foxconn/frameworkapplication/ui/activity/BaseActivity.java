@@ -1,11 +1,15 @@
 package com.example.foxconn.frameworkapplication.ui.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -41,6 +45,27 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = getIntent().getExtras();
+        initParams(bundle);
+        View mView = bindView();
+        if (null == mView){
+            mContextView = LayoutInflater.from(this).inflate(bindLayout(),null);
+        }else{
+            mContextView = mView;
+        }
+        if (isAllowFullScreen){
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+        if (isSetStatusBar){
+            steepStatusBar();
+        }
+        setContentView(mContextView);
+        if (!isAllowScreenRoate){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        initView(mContextView);
+        doBusiness(this);
+
 
     }
     /**
@@ -66,17 +91,18 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
     /**
      * 绑定视图
      */
-    public abstract void bindView();
+    public abstract View bindView();
 
     /**
      * 绑定布局
      */
-    public abstract void bindLayout();
+    public abstract int bindLayout();
 
     /**
      * 初始化控件
      */
-    public abstract void initView();
+    public abstract void initView(View view);
+    public abstract void doBusiness(Context mContext);
 
     /**
      *
