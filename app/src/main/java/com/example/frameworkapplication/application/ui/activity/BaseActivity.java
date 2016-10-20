@@ -1,4 +1,4 @@
-package com.example.foxconn.frameworkapplication.ui.activity;
+package com.example.frameworkapplication.application.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,9 +20,9 @@ import android.widget.Toast;
  */
 public abstract class BaseActivity extends Activity implements View.OnClickListener {
     /**是否沉浸状态栏**/
-    private boolean isSetStatusBar = true;
+    private boolean isSetStatusBar = false;
     /**是否允许全屏**/
-    private boolean isAllowFullScreen = true;
+    private boolean isAllowFullScreen = false;
     /**是否禁止转屏**/
     private boolean isAllowScreenRoate = false;
     /**返回键退出**/
@@ -59,6 +59,7 @@ public abstract class BaseActivity extends Activity implements View.OnClickListe
         if (isSetStatusBar){
             steepStatusBar();
         }
+
         setContentView(mContextView);
         if (!isAllowScreenRoate){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
